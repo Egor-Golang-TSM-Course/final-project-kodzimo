@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package hashing;
+
+option go_package = "final-project-kodzimo/proto"; // replace with your module name and path
+
+// The hashing service definition.
+service Hashing {
+  // Checks if the payload's hash already exists
+  rpc CheckHash(HashRequest) returns (HashResponse) {}
+
+  // Returns the hash for an existing payload
+  rpc GetHash(HashRequest) returns (HashResponse) {}
+
+  // Creates and stores a hash for a new payload
+  rpc CreateHash(HashRequest) returns (HashResponse) {}
+}
+
+// The request message containing the payload's data
+message HashRequest {
+  string payload = 1;
+}
+
+// The response message containing the hash
+message HashResponse {
+  string hash = 1;
+}
