@@ -2,42 +2,40 @@ package hashing
 
 import (
 	"context"
-	"log"
-	"net"
 
 	pb "final-project-kodzimo/proto"
-
-	"google.golang.org/grpc"
 )
 
-type server struct {
-	pb.UnimplementedHashingServer
-	hashingService *HashingService
+type Server struct {
+	pb.HashingServer
+	HashingService *HashingService
 }
 
-func (s *server) CheckHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
-	return s.hashingService.CheckHash(ctx, in)
+func (s *Server) CheckHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
+	return s.HashingService.CheckHash(ctx, in)
 }
 
-func (s *server) GetHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
-	return s.hashingService.GetHash(ctx, in)
+func (s *Server) GetHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
+	return s.HashingService.GetHash(ctx, in)
 }
 
-func (s *server) CreateHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
-	return s.hashingService.CreateHash(ctx, in)
+func (s *Server) CreateHash(ctx context.Context, in *pb.HashRequest) (*pb.HashResponse, error) {
+	return s.HashingService.CreateHash(ctx, in)
 }
 
-func main() {
-	lis, err := net.Listen("tcp", ":50051")
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-	s := grpc.NewServer()
-	pb.RegisterHashingServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-}
+// Вынесено в main.go
+//
+// func main() {
+// 	lis, err := net.Listen("tcp", ":50051")
+// 	if err != nil {
+// 		log.Fatalf("failed to listen: %v", err)
+// 	}
+// 	s := grpc.NewServer()
+// 	pb.RegisterHashingServer(s, &Server{})
+// 	if err := s.Serve(lis); err != nil {
+// 		log.Fatalf("failed to serve: %v", err)
+// 	}
+// }
 
 /*
 Этот код создает gRPC сервер и регистрирует ваш Hashing Service на этом сервере.

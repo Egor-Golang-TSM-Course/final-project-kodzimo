@@ -25,3 +25,11 @@ message HashRequest {
 message HashResponse {
   string hash = 1;
 }
+
+/*
+Спасибо за предоставление вашего файла hashing.proto. Ваш файл proto выглядит корректно. 
+В нем определены сервис Hashing и сообщения HashRequest и HashResponse.
+
+В вашем случае, поле payload в HashRequest содержит данные, которые вы хотите хешировать. 
+Поэтому, вам нужно использовать req.GetPayload() для получения данных из req.
+*/
