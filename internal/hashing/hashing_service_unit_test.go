@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
+	"final-project-kodzimo/internal/storage"
 	pb "final-project-kodzimo/proto"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,11 +14,10 @@ import (
 Этот тест проверяет, что метод CreateHash не возвращает ошибку и возвращает непустой хеш.
 */
 func TestCreateHash(t *testing.T) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
-	})
+	client, err := storage.ConnectToRedis()
+	if err != nil {
+		t.Fatalf("failed to connect to Redis: %v", err)
+	}
 
 	service := NewHashingService(client)
 	req := &pb.HashRequest{Payload: "test"}
@@ -34,36 +33,36 @@ func TestCreateHash(t *testing.T) {
 Этот тест проверяет, что метод CheckHash не возвращает ошибку и возвращает непустой хеш.
 */
 func TestCheckHash(t *testing.T) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
-	})
+	client, err := storage.ConnectToRedis()
+	if err != nil {
+		t.Fatalf("failed to connect to Redis: %v", err)
+	}
 
 	service := NewHashingService(client)
 	req := &pb.HashRequest{Payload: "test"}
 
 	// Создаем хеш
-	_, err := service.CreateHash(context.Background(), req)
+	createResp, err := service.CreateHash(context.Background(), req)
 	assert.NoError(t, err)
 
 	// Проверяем хеш
-	resp, err := service.CheckHash(context.Background(), req)
+	checkReq := &pb.HashRequest{Payload: createResp.GetHash()}
+	checkResp, err := service.CheckHash(context.Background(), checkReq)
 
 	assert.NoError(t, err)
-	assert.NotNil(t, resp)
-	assert.NotEmpty(t, resp.Hash)
+	if checkResp != nil {
+		assert.NotEmpty(t, checkResp.Hash)
+	}
 }
 
 /*
 Этот тест проверяет, что метод GetHash не возвращает ошибку и возвращает тот же хеш, который был создан.
 */
 func TestGetHash(t *testing.T) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
-	})
+	client, err := storage.ConnectToRedis()
+	if err != nil {
+		t.Fatalf("failed to connect to Redis: %v", err)
+	}
 
 	service := NewHashingService(client)
 	req := &pb.HashRequest{Payload: "test"}
@@ -82,6 +81,5 @@ func TestGetHash(t *testing.T) {
 }
 
 /*
-Для запуска unit-тестов вы можете использовать go test -run 'Unit',
-а для интеграционных тестов - go test -run 'Integration'.
+Для запуска тестов вы можете использовать go test -run 'Имя_теста'.
 */

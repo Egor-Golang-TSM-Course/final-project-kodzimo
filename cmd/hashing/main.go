@@ -3,6 +3,7 @@ package main
 import (
 	"final-project-kodzimo/internal/gateway"
 	"final-project-kodzimo/internal/hashing"
+	"final-project-kodzimo/internal/storage"
 	pb "final-project-kodzimo/proto"
 	"log"
 	"net"
@@ -13,7 +14,7 @@ import (
 )
 
 func main() {
-	redisClient, err := hashing.ConnectToRedis()
+	redisClient, err := storage.ConnectToRedis()
 	if err != nil {
 		log.Fatalf("failed to connect to Redis: %v", err)
 	}

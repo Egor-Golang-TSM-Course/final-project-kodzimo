@@ -28,21 +28,6 @@ func NewHashingService(redisClient *redis.Client) *HashingService {
 	return &HashingService{redisClient: redisClient}
 }
 
-func ConnectToRedis() (*redis.Client, error) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // replace with your Redis server address
-		Password: "",               // replace with your Redis server password if any
-		DB:       0,                // default DB
-	})
-
-	_, err := client.Ping(context.Background()).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return client, nil
-}
-
 /*
 Метод CheckHash. Этот метод будет принимать входные данные, проверять, существует ли уже хеш для этих данных
 в базе данных, и возвращать результат.
