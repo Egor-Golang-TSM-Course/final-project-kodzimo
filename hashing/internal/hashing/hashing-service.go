@@ -5,7 +5,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	pb "final-project-kodzimo/proto"
+	pb "final-project-kodzimo-shared/proto"
 
 	"github.com/go-redis/redis/v8"
 	"google.golang.org/grpc/codes"

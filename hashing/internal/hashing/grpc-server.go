@@ -3,7 +3,7 @@ package hashing
 import (
 	"context"
 
-	pb "final-project-kodzimo/proto"
+	pb "final-project-kodzimo-shared/proto"
 )
 
 type Server struct {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"final-project-kodzimo/internal/storage"
-	pb "final-project-kodzimo/proto"
+	"final-project-kodzimo-hashing/internal/storage"
+	pb "final-project-kodzimo-shared/proto"
 
 	"github.com/stretchr/testify/assert"
 )

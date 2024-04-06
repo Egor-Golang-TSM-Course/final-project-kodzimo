@@ -8,8 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"final-project-kodzimo/proto"
-	pb "final-project-kodzimo/proto"
+	pb "final-project-kodzimo-shared/proto"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -95,7 +94,7 @@ func TestCheckHashHandler(t *testing.T) {
 
 func TestCheckHashHandlerGrpcError(t *testing.T) {
 	hashingClientMock := new(HashingClientMock)
-	hashingClientMock.On("CheckHash", mock.Anything, mock.Anything).Return(&proto.HashResponse{}, errors.New("forced error"))
+	hashingClientMock.On("CheckHash", mock.Anything, mock.Anything).Return(&pb.HashResponse{}, errors.New("forced error"))
 
 	gw := &GatewayService{
 		HashingClient: hashingClientMock,
@@ -169,7 +168,7 @@ func TestGetHashHandler(t *testing.T) {
 
 func TestGetHashHandlerInternalError(t *testing.T) {
 	hashingClientMock := new(HashingClientMock)
-	hashingClientMock.On("GetHash", mock.Anything, mock.Anything).Return(&proto.HashResponse{}, errors.New("forced error"))
+	hashingClientMock.On("GetHash", mock.Anything, mock.Anything).Return(&pb.HashResponse{}, errors.New("forced error"))
 
 	gw := &GatewayService{
 		HashingClient: hashingClientMock,
